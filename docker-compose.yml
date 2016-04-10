@@ -2,75 +2,65 @@
 version: '2'
 
 services:
-  elasticdata:
-    image: elasticsearch:1.7.0
-    volumes:
-      - /var/lib/elasticsearch/data
-      - /var/lib/elasticsearch/logs
-      - /tmp/elasticsearch
-    environment:
-      - "constraint:disk==large"
-    command: chown elasticsearch:elasticsearch /var/lib/elasticsearch/logs /var/lib/elasticsearch/data /tmp/elasticsearch
+  # ELK
+    # elasticdata:
+    #   image: elasticsearch:1.7.0
+    #   container_name: elasticdata
+    #   volumes:
+    #     - /var/lib/elasticsearch/data
+    #     - /var/lib/elasticsearch/logs
+    #     - /tmp/elasticsearch
+    #   command: chown elasticsearch:elasticsearch /var/lib/elasticsearch/logs /var/lib/elasticsearch/data /tmp/elasticsearch
+    #   networks:
+    #     - logging
 
-  elasticsearch:
-    image: elasticsearch:1.7.0
-    volumes_from:
-      - elasticdata
-    volumes:
-      - /home/ubuntu/conf-files/es-conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-      - /home/ubuntu/conf-files/es-conf/templates:/usr/share/elasticsearch/config/templates
-      - /home/ubuntu/conf-files/backup:/mount/backup
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      - "constraint:disk==large"
-    # log_driver: "syslog"
-    # log_opt:
-    #   syslog-address: "udp://localhost:5000"
-    #   syslog-tag: "elasticsearch"
+    elasticsearch:
+      image: elasticsearch:1.7.0
+      container_name: elasticsearch
+      volumes:
+        - elasticsearch-data
+        - elasticsearch-logs
+        - ./conf-files/es-conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      networks:
+        - logging
 
-  proxyelk:
-    image: nginx:1.9.3
-    ports:
-      - "5600:5600"
-    volumes:
-      - /home/ubuntu/conf-files/proxy-conf:/etc/nginx/conf.d
-    environment:
-      - "constraint:disk==large"
-    depends_on:
-      - kibana
-    # log_driver: "syslog"
-    # log_opt:
-    #   syslog-address: "udp://localhost:5000"
-    #   syslog-tag: "elasticsearch"
+    proxyelk:
+      image: nginx:1.9.3
+      container_name: proxyelk
+      ports:
+        - "5600:5600"
+      volumes:
+        - ./conf-files/proxy-conf:/etc/nginx/conf.d
+      depends_on:
+        - kibana
+      networks:
+        - logging
 
-  kibana:
-    image: kibana:4.1.1
-    ports:
-      - "5601:5601"
-    environment:
-      - "constraint:disk==large"
-      - ELASTICSEARCH_URL=http://elk_elasticsearch_1:9200
-    depends_on:
-      - elasticsearch
-      - logstash
-    # log_driver: "syslog"
-    # log_opt:
-    #   syslog-address: "udp://localhost:5000"
-    #   syslog-tag: "elasticsearch"
+    kibana:
+      image: kibana:4.1.1
+      container_name: kibana
+      environment:
+        - ELASTICSEARCH_URL=http://elasticsearch:9200
+      depends_on:
+        - elasticsearch
+        - logstash
+      networks:
+        - logging
 
-  logstash:
-    image: logstash:1.5.3
-    ports:
-      - "5000:5000"
-      - "5000:5000/udp"
-    volumes:
-      - /home/ubuntu/conf-files/logstash-conf:/opt/logstash/conf.d
-    command: -f /opt/logstash/conf.d/logstash.conf
-    environment:
-      - "constraint:disk==large"
-    # log_driver: "syslog"
-    # log_opt:
-    #   syslog-address: "udp://localhost:5000"
-    #   syslog-tag: "elasticsearch"
+    logstash:
+      image: logstash:1.5.3
+      container_name: logstash
+      ports:
+        - "5000:5000/udp"
+      volumes:
+        - ./conf-files/logstash-conf:/opt/logstash/conf.d
+      command: -f /opt/logstash/conf.d/logstash.conf
+      networks:
+        - logging
+
+volumes:
+  elasticsearch-data:
+  elasticsearch-logs:
+
+networks:
+  logging:
