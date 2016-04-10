@@ -3,23 +3,20 @@ version: '2'
 
 services:
   # ELK
-    # elasticdata:
-    #   image: elasticsearch:1.7.0
-    #   container_name: elasticdata
-    #   volumes:
-    #     - /var/lib/elasticsearch/data
-    #     - /var/lib/elasticsearch/logs
-    #     - /tmp/elasticsearch
-    #   command: chown elasticsearch:elasticsearch /var/lib/elasticsearch/logs /var/lib/elasticsearch/data /tmp/elasticsearch
-    #   networks:
-    #     - logging
+    elasticdata:
+      image: elasticsearch:1.7.0
+      container_name: elasticdata
+      volumes:
+        - elasticsearch-data:/var/lib/elasticsearch/data
+        - elasticsearch-logs:/var/lib/elasticsearch/logs
+      command: chown elasticsearch:elasticsearch /var/lib/elasticsearch/logs /var/lib/elasticsearch/data
 
     elasticsearch:
       image: elasticsearch:1.7.0
       container_name: elasticsearch
+      volumes_from:
+        - elasticdata
       volumes:
-        - elasticsearch-data
-        - elasticsearch-logs
         - ./conf-files/es-conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       networks:
         - logging
