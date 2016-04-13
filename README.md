@@ -1,5 +1,7 @@
 # elk
-A compose file to quickly setup and ELK stack
+A compose file to setup and ELK stack.
+
+Logstash will be listening for syslog events on the UDP port 5000.
 
 Try it out with:
 
@@ -30,7 +32,7 @@ Once your first data has been sent to logstash, it is then possible to create yo
 
 Naviguate to `https://$(docker-machine ip elk):5601`.
 
-The login is `admin` and the password is `Kibana05` (see the comments at the top of the file `/conf-files/proxy-conf/kibana-nginx.conf` to change those credentials)
+The login is `admin` and the password is `Kibana05` (see the comments at the top of the file `/conf-files/proxy-conf/kibana-nginx.conf` to change those credentials).
 
 Click on the `Create` button to create your first index.
 
