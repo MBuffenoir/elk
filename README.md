@@ -1,4 +1,4 @@
-# elk
+#ELK
 A compose file to setup and ELK stack.
 
 Logstash will be listening for syslog events on the UDP port 5000.
@@ -13,7 +13,7 @@ Try it out with:
     $ docker-compose up -d
     $ echo "Hi syslog" | nc -u $(docker-machine ip elk) 5000
 
-# On a cloud machine
+#On a cloud machine
 
 Running the compose file on a distant machine will require a copy of the `conf-files` folder on it.
 You can use docker-machine for this purpose:
@@ -26,7 +26,7 @@ The file `docker-compose-ubuntu.yml` is an example to be used with an ubuntu mac
 
 This compose file should also work without issue on a swarm cluster.
 
-# Create you first index
+#Create you first index
 
 Once your first data has been sent to logstash, it is then possible to create your first index by logging into kibana.
 
