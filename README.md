@@ -3,13 +3,16 @@ A compose file to setup and ELK stack.
 
 Logstash will be listening for syslog events on the UDP port 5000.
 
-Try it out with:
+Clone the repo with:
+
+    $ git clone git@github.com:MBuffenoir/elk.git
+    $ cd elk
+
+Create a local machine and start ELK with:
 
     $ docker-machine create -d virtualbox elk
     $ docker-machine scp -r conf-files/ elk:
     $ eval $(docker-machine env elk)
-    $ git clone git@github.com:MBuffenoir/elk.git
-    $ cd elk
     $ docker-compose up -d
 
 Test it with a simple command:
@@ -33,7 +36,7 @@ This compose file should also work without issue on a swarm cluster.
 
 Once your first data has been sent to logstash, it is then possible to create your first index by logging into kibana.
 
-Naviguate to `https://$(docker-machine ip elk):5601`.
+Navigate to `https://$(docker-machine ip elk):5601`.
 
 The login is `admin` and the password is `Kibana05` (see the comments at the top of the file `/conf-files/proxy-conf/kibana-nginx.conf` to change those credentials).
 
