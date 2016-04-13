@@ -17,7 +17,7 @@ services:
       volumes_from:
         - elasticdata
       volumes:
-        - ./conf-files/es-conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+        - /home/docker/conf-files/es-conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       networks:
         - logging
 
@@ -27,7 +27,7 @@ services:
       ports:
         - "5600:5600"
       volumes:
-        - ./conf-files/proxy-conf:/etc/nginx/conf.d
+        - /home/docker/conf-files/proxy-conf:/etc/nginx/conf.d
       depends_on:
         - kibana
       networks:
@@ -50,7 +50,7 @@ services:
       ports:
         - "5000:5000/udp"
       volumes:
-        - ./conf-files/logstash-conf:/opt/logstash/conf.d
+        - /home/docker/conf-files/logstash-conf:/opt/logstash/conf.d
       command: -f /opt/logstash/conf.d/logstash.conf
       networks:
         - logging
