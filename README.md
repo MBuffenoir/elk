@@ -24,9 +24,11 @@ The file `docker-compose-ubuntu.yml` is an example to be used with an ubuntu mac
 
 Once your first data has been sent to logstash, it is then possible to create your first index by logging into kibana.
 
-Naviguate to http://$(docker-machine ip elk):5601 and create an index.
+Naviguate to `https://$(docker-machine ip elk):5601`.
 
 The login is `admin` and the password is `Kibana05` (see the comments at the top of the file `/conf-files/proxy-conf/kibana-nginx.conf` to change those credentials)
+
+Click on the `Create` button to create your first index.
 
 Click on the Discover tab, you should now get access to your logs:
 
