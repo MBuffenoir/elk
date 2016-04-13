@@ -11,6 +11,9 @@ Try it out with:
     $ git clone git@github.com:MBuffenoir/elk.git
     $ cd elk
     $ docker-compose up -d
+
+Test it with a simple command:
+
     $ echo "Hi syslog" | nc -u $(docker-machine ip elk) 5000
 
 #On a cloud machine
