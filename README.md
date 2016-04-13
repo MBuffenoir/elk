@@ -18,7 +18,11 @@ You can use docker-machine for this purpose:
 
     $ docker-machine scp -r conf-files machine_name:
 
-The file `docker-compose-ubuntu.yml` is an example to be used with an ubuntu machine.
+The file `docker-compose-ubuntu.yml` is an example to be used with an ubuntu machine:
+
+    $ docker-machine -f docker-compose-ubuntu.yml up -d
+
+This compose file should also work without issue on a swarm cluster.
 
 # Create you first index
 
