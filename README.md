@@ -17,7 +17,7 @@ Create a local machine and start ELK with:
 
 Test it with a simple command:
 
-    $ echo "Hi syslog" | nc -u $(docker-machine ip elk) 5000
+    $ nc -w0 -u $(docker-machine ip elk) 5000 <<< "Hi syslog"
 
 #On a cloud machine
 
@@ -36,7 +36,7 @@ This compose file should also work without issue on a swarm cluster.
 
 Once your first data has been sent to logstash, it is then possible to create your first index by logging into kibana.
 
-Navigate to `https://$(docker-machine ip elk):5601`.
+Navigate to `https://$(docker-machine ip elk):5600`.
 
 The login is `admin` and the password is `Kibana05` (see the comments at the top of the file `/conf-files/proxy-conf/kibana-nginx.conf` to change those credentials).
 
